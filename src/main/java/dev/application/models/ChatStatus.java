@@ -5,10 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Content {
-    FILE("FILE"),
-    IMAGE("IMAGE"),
-    TEXT("TEXT");
-
+public enum ChatStatus {
+    CREATED("CREATED"),
+    DELETED("DELETED");
     private final String value;
 }

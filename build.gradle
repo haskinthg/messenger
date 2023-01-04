@@ -17,7 +17,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.postgresql:postgresql'
-    implementation 'com.google.code.gson:gson'
+//    implementation 'com.google.code.gson:gson'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 }
