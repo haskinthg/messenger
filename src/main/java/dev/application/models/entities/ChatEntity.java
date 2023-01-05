@@ -17,11 +17,11 @@ import java.util.Set;
 @Builder
 public class ChatEntity extends BaseEntity {
 
-    @ManyToMany(mappedBy = "chats")
+    @ManyToMany(mappedBy = "chats", cascade = CascadeType.ALL)
     private Set<UserEntity> users;
 
-    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.TRUE)
     @JoinColumn(name = "chat_id", updatable = true)
     private Set<MessageEntity> messages;
 

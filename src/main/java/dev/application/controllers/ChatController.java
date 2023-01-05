@@ -28,7 +28,7 @@ public class ChatController {
 
     }
 
-    @GetMapping("/{user_id}")
+    @GetMapping("/{username}")
     public Set<ChatDTO> chat(@PathVariable("username") String username) throws Exception {
         return service.getChatForUser(username);
     }

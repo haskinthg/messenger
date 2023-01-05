@@ -23,10 +23,7 @@ public class ChatService {
 
     public Set<ChatDTO> getChatForUser(String username) {
 
-        return chatRepo.findByUsers_Username(username).stream().map(chat -> new ChatDTO(chat.getId(),
-                chat.getUsers().stream().map(UserDTO::new).collect(Collectors.toSet()),
-                chat.getMessages().stream().map(MessageDTO::new).collect(Collectors.toSet()),
-                chat.getChatStatus())).collect(Collectors.toSet());
+        return chatRepo.findByUsers_Username(username).stream().map(ChatDTO::new).collect(Collectors.toSet());
     }
 
     public ChatDTO addChat(ChatDTO chatDTO) {

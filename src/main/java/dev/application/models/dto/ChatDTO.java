@@ -15,12 +15,16 @@ public class ChatDTO {
     public ChatDTO(ChatEntity chat) {
         this.id = chat.getId();
         this.users = chat.getUsers().stream().map(UserDTO::new).collect(Collectors.toSet());
-        this.messages = chat.getMessages().stream().map(MessageDTO::new).collect(Collectors.toSet());
+//        this.messages = chat.getMessages().stream().map(MessageDTO::new).collect(Collectors.toSet());
+        if(chat.getMessages().stream().reduce((prev, next) -> next).isPresent())
+            this.lastMessage = new MessageDTO(chat.getMessages().stream().reduce((prev, next) -> next).get());
         this.chatStatus = chat.getChatStatus();
     }
     private Long id;
     private Set<UserDTO> users;
-    private Set<MessageDTO> messages;
+//    private Set<MessageDTO> messages;
+
+    private MessageDTO lastMessage;
     private ChatStatus chatStatus;
 //    private String chat_name;
 //    private String chat_photo;

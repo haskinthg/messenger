@@ -22,7 +22,7 @@ import java.util.Set;
 public class UserEntity extends BaseEntity {
 
     static BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_chat",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "chat_id")
@@ -34,11 +34,11 @@ public class UserEntity extends BaseEntity {
 
     private String photo;
 
-    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "user_id", updatable = true)
     private Set<RoleUserEntity> roles;
-    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "user_id", updatable = true)
     private Set<MessageEntity> messages;
