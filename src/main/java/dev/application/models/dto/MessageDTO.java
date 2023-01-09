@@ -21,7 +21,9 @@ public class MessageDTO {
     private String value;
     private MessageStatus status;
     private Date dateTime;
-    private MessageEntity childMessage;
+    private MessageDTO childMessage;
+
+    private UserDTO user;
     private String usernameFrom;
 
     private String usernameTo;
@@ -34,5 +36,8 @@ public class MessageDTO {
         this.dateTime = msgEntity.getDateTime();
         this.usernameFrom = msgEntity.getUser().getUsername();
         this.chat_id = msgEntity.getChat().getId();
+        if(msgEntity.getChildMessage()!=null)
+            this.childMessage = new MessageDTO(msgEntity.getChildMessage());
+        this.user = new UserDTO(msgEntity.getUser());
     }
 }

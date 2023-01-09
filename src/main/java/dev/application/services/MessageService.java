@@ -9,7 +9,6 @@ import dev.application.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,22 +18,27 @@ public class MessageService {
     @Autowired
     private MessageRepo messageRepo;
 
+    @Autowired
     private ChatRepo chatRepo;
+    @Autowired
     private UserRepo userRepo;
 
-    public Set<MessageDTO> allByUserId(Long id) throws Exception {
+    public Set<MessageDTO> allByChatId(Long id) throws Exception {
         return messageRepo.findByChatId(id).stream().map(MessageDTO::new).collect(Collectors.toSet());
     }
 
     public MessageDTO addMessage(MessageDTO msgDTO) {
         MessageEntity msgEntity = new MessageEntity();
-        msgEntity.setId(msgDTO.getId());
         msgEntity.setStatus(MessageStatus.RECEIVED);
         msgEntity.setMessageType(msgDTO.getMessageType());
         msgEntity.setDateTime(new Date());
         msgEntity.setChat(chatRepo.findById(msgDTO.getChat_id()).get());
         msgEntity.setUser(userRepo.findByUsername(msgDTO.getUsernameFrom()));
-        return msgDTO;
+        msgEntity.setValue(msgDTO.getValue());
+        if (msgDTO.getChildMessage() != null)
+            if (messageRepo.findById(msgDTO.getChildMessage().getId()).isPresent())
+                msgEntity.setChildMessage(messageRepo.findById(msgDTO.getChildMessage().getId()).get());
+        return new MessageDTO(messageRepo.save(msgEntity));
     }
 
 }
