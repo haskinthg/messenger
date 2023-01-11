@@ -33,4 +33,9 @@ public class ChatController {
         return service.getChatForUser(username);
     }
 
+    @GetMapping("/{u1}/{u2}")
+    public ChatDTO getChat(@PathVariable("u1") String u1, @PathVariable("u2") String u2) throws Exception{
+        return service.findBy2UsersOrCreate(u1,u2);
+    }
+
 }

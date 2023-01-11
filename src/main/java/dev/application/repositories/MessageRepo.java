@@ -1,19 +1,23 @@
 package dev.application.repositories;
 
 import dev.application.models.entities.MessageEntity;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface MessageRepo extends CrudRepository<MessageEntity, Long> {
+public interface MessageRepo extends PagingAndSortingRepository<MessageEntity, Long> {
 
     //    @Query(value = "select * from messages where id = :id and ", nativeQuery = true)
-    public Set<MessageEntity> findByChatId(long id);
+    Page<MessageEntity> findByChatId(long id, Pageable pageable);
+
+    long countByChatId(long id);
 
 //    public Set<MessageEntity> findByUserId(long id);
 
-    public Optional<MessageEntity> findById(long id);
+    Optional<MessageEntity> findById(long id);
 }

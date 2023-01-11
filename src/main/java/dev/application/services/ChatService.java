@@ -1,5 +1,6 @@
 package dev.application.services;
 
+import dev.application.models.ChatStatus;
 import dev.application.models.dto.ChatDTO;
 import dev.application.models.dto.MessageDTO;
 import dev.application.models.dto.UserDTO;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 @Service
@@ -33,5 +35,21 @@ public class ChatService {
             chatEntity.addUser(userRepo.findByUsername(userDTO.getUsername()));
         }
         return new ChatDTO(chatRepo.save(chatEntity));
+    }
+
+
+    public ChatDTO findBy2UsersOrCreate(String username1, String username2){
+        ChatEntity chatEntity = chatRepo.findBy2Usernames(username1, username2);
+        if(chatEntity==null) {
+            chatEntity = new ChatEntity();
+            chatEntity.setUsers(new HashSet<UserEntity>());
+            chatEntity.addUser(userRepo.findByUsername(username1));
+            chatEntity.addUser(userRepo.findByUsername(username2));
+            chatEntity.setChatStatus(ChatStatus.CREATED);
+            return new ChatDTO(chatRepo.save(chatEntity));
+        }
+        else {
+            return new ChatDTO(chatEntity);
+        }
     }
 }

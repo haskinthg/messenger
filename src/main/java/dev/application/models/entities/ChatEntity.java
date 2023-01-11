@@ -6,16 +6,22 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "chats")
 @Getter
 @Setter
-@NoArgsConstructor
+//@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ChatEntity extends BaseEntity {
+
+    public ChatEntity() {
+        this.users = new HashSet<UserEntity>();
+        this.messages = new HashSet<MessageEntity>();
+    }
 
     @ManyToMany(mappedBy = "chats", cascade = CascadeType.ALL)
     private Set<UserEntity> users;

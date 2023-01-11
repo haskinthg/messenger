@@ -16,6 +16,7 @@ public class ChatDTO {
         this.id = chat.getId();
         this.users = chat.getUsers().stream().map(UserDTO::new).collect(Collectors.toSet());
 //        this.messages = chat.getMessages().stream().map(MessageDTO::new).collect(Collectors.toSet());
+        if(chat.getMessages()!=null)
         if(chat.getMessages().stream().reduce((prev, next) -> next).isPresent())
             this.lastMessage = new MessageDTO(chat.getMessages().stream().reduce((prev, next) -> next).get());
         this.chatStatus = chat.getChatStatus();
