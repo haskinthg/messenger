@@ -4,6 +4,7 @@ import dev.application.models.ChatStatus;
 import dev.application.models.entities.ChatEntity;
 import lombok.*;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,13 @@ public class ChatDTO {
         if(chat.getMessages().stream().reduce((prev, next) -> next).isPresent())
             this.lastMessage = new MessageDTO(chat.getMessages().stream().reduce((prev, next) -> next).get());
         this.chatStatus = chat.getChatStatus();
+    }
+
+    public Date getDateLast() {
+        if(this.lastMessage==null) return null;
+        if(this.lastMessage.getDateTime()==null)
+            this.lastMessage.getDateTime();
+        return this.lastMessage.getDateTime();
     }
     private Long id;
     private Set<UserDTO> users;

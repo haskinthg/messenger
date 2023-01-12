@@ -5,10 +5,8 @@ import dev.application.repositories.UserRepo;
 import dev.application.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -23,5 +21,15 @@ public class UserController {
     @GetMapping("/{filter}")
     private Set<UserDTO> getUsers(@PathVariable("filter") String filterUsername) {
         return userService.getUsersByFilter(filterUsername);
+    }
+
+    @GetMapping("/getUser/{username}")
+    private UserDTO getUser(@PathVariable("username") String username) throws Exception {
+        return userService.getUserByUsername(username);
+    }
+
+    @PostMapping(value="update", produces = MediaType.APPLICATION_JSON_VALUE)
+    private UserDTO update(@RequestBody UserDTO user) throws Exception{
+        return userService.updateUser(user);
     }
 }

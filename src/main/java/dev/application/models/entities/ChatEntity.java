@@ -6,7 +6,9 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,7 +22,7 @@ public class ChatEntity extends BaseEntity {
 
     public ChatEntity() {
         this.users = new HashSet<UserEntity>();
-        this.messages = new HashSet<MessageEntity>();
+        this.messages = new ArrayList<MessageEntity>();
     }
 
     @ManyToMany(mappedBy = "chats", cascade = CascadeType.ALL)
@@ -29,7 +31,7 @@ public class ChatEntity extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.TRUE)
     @JoinColumn(name = "chat_id", updatable = true)
-    private Set<MessageEntity> messages;
+    private List<MessageEntity> messages;
 
     @Enumerated(EnumType.STRING)
     private ChatStatus chatStatus;
