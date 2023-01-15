@@ -4,6 +4,7 @@ import dev.application.models.dto.MessageDTO;
 import dev.application.models.entities.MessageEntity;
 import dev.application.models.entities.UserEntity;
 import dev.application.models.websocket.WebSocketObject;
+import dev.application.models.websocket.WebSocketType;
 import dev.application.repositories.MessageRepo;
 import dev.application.services.MessageService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,12 @@ public class MessageController {
 
     @MessageMapping("/conversation")
     public void sendMessage(@Payload WebSocketObject<MessageDTO> msg) throws Exception {
-        MessageDTO res = service.addMessage(msg.getContent());
+        MessageDTO res = new MessageDTO();
+        if(msg.getType() == WebSocketType.ADD)
+            res = service.addMessage(msg.getContent());
+        else if(msg.getType() == WebSocketType.DELETE) {
+            res = service.deleteMessage(msg.getContent());
+        }
         WebSocketObject<MessageDTO> sending = new WebSocketObject<MessageDTO>(msg.getType(), res);
         messagingTemplate.convertAndSend("/user/" + msg.getContent().getUsernameTo() + "/messages", sending);
         messagingTemplate.convertAndSend("/user/" + msg.getContent().getUsernameFrom() + "/messages", sending);

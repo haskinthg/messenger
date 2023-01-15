@@ -1,5 +1,6 @@
 package dev.application.repositories;
 
+import dev.application.models.MessageStatus;
 import dev.application.models.entities.MessageEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,7 @@ import java.util.Set;
 public interface MessageRepo extends PagingAndSortingRepository<MessageEntity, Long> {
 
     //    @Query(value = "select * from messages where id = :id and ", nativeQuery = true)
-    Page<MessageEntity> findByChatId(long id, Pageable pageable);
+    Page<MessageEntity> findByStatusNotAndChatId(MessageStatus status, long id, Pageable pageable);
 
     long countByChatId(long id);
 

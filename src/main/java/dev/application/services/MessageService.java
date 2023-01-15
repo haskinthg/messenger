@@ -31,7 +31,7 @@ public class MessageService {
     private UserRepo userRepo;
 
     public List<MessageDTO> pageByChatId(Long id, int page, int size) throws Exception {
-        return messageRepo.findByChatId(id, PageRequest.of(page, size, Sort.by("dateTime").descending())).getContent()
+        return messageRepo.findByStatusNotAndChatId(MessageStatus.DELETED, id, PageRequest.of(page, size, Sort.by("dateTime").descending())).getContent()
                 .stream().map(MessageDTO::new)
                 .sorted(Comparator.comparing(MessageDTO::getDateTime))
                 .collect(Collectors.toList());
@@ -48,6 +48,12 @@ public class MessageService {
         if (msgDTO.getChildMessage() != null)
             if (messageRepo.findById(msgDTO.getChildMessage().getId()).isPresent())
                 msgEntity.setChildMessage(messageRepo.findById(msgDTO.getChildMessage().getId()).get());
+        return new MessageDTO(messageRepo.save(msgEntity));
+    }
+
+    public MessageDTO deleteMessage(MessageDTO msg) {
+        MessageEntity msgEntity = messageRepo.findById(msg.getId()).get();
+        msgEntity.setStatus(MessageStatus.DELETED);
         return new MessageDTO(messageRepo.save(msgEntity));
     }
 
